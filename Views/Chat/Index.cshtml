@@ -1,0 +1,34 @@
+﻿
+<h2>Chat</h2>
+<div id="body" style="background-color: #808080">
+    
+    <section>
+        <div id="chatusers">
+            <h4>Active users</h4>
+            <div id="users" style="background-color: #AAAAAA; margin: 5px 2px; padding: 2px; width: 450px; height: 150px; overflow: auto;">
+            </div>
+            <button id="usersbtn" onclick="GetUsers()">Get Users</button>
+        </div>
+    </section>
+    <section>
+        <div id="start">
+            <label for="username">Enter username to start chatting</label>
+            <input type="text" id="username" />
+            <input type="button" value="Login" onclick="Login()" />
+        </div>
+        <div id="chatContainer" style="padding:2px; margin: 4px 2px;">
+            <div id="chatTemplate" style="background-color: #AAAAAA; padding:2px; margin: 2px; width: 450px; height: 250px; overflow: auto;">
+            </div>
+            <div id="message"></div>
+            <div id="chatControl" >
+                <textarea type="text" id="push" style="width: 450px;"></textarea>
+                <input type="button" value="Send" onclick="Push()" />
+                <input type="button" value="Logout" onclick="Logout()" />
+
+            </div>
+        </div>
+    </section>
+
+    @Scripts.Render("~/Scripts/Chat/ChatScript.js")
+</div>
+  
