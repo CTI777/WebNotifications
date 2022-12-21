@@ -16,19 +16,12 @@ namespace WebNotifications
             // Web API routes
             config.MapHttpAttributeRoutes();
 
-            /*
             config.Routes.MapHttpRoute(
                 name: "DefaultApi",
                 routeTemplate: "api/{controller}/{id}",
                 defaults: new { id = RouteParameter.Optional }
             );
-            */
 
-            RouteTable.Routes.MapHttpRoute(
-                name: "DefaultApi",
-                routeTemplate: "api/{controller}/{id}",
-                defaults: new { id = RouteParameter.Optional }
-            ).RouteHandler = new SessionRouteHandler();
         }
     }
 }

@@ -26,19 +26,10 @@ namespace WebNotifications.Controllers
     {
         private static readonly TimerProcess timer_clean = new TimerProcess(20000, CleanUp);
         private static readonly ConcurrentBag<ClientUser> clients;
-        //private static readonly List<ClientUser> clients;
 
-        //This is for handling session
-        private static IDataPersistance<string> sessionStorage;
-
-        private string getSessionId()
-        {
-            return sessionStorage.ObjectValue;
-        }
         private string createSetSessionId(string user, string dt)
         {
             string id = Tools.Tools.GetMd5Hash(user + dt);
-            sessionStorage.ObjectValue = id;
             return id;
         }
 
@@ -80,9 +71,6 @@ namespace WebNotifications.Controllers
 
         static ChatApiController()
         {
-
-            sessionStorage = new SessionDataPersistance<string>();
-
             clients = new ConcurrentBag<ClientUser>();
             timer_clean.Start();
         }
@@ -90,6 +78,14 @@ namespace WebNotifications.Controllers
         private ClientUser GetClientBySessionId(string id)
         {
             return clients.Where(c => string.Equals(c.user?.sessionID, id)).FirstOrDefault();
+
+        }
+
+        private ClientUser GetValidClientBySessionId(string id)
+        {
+            return clients.Where(c => c.IsValid() && string.Equals(c.user?.sessionID, id)).FirstOrDefault();
+
+
 
         }
         private User GetUserBySessionId(string id) {
@@ -101,7 +97,7 @@ namespace WebNotifications.Controllers
         public IHttpActionResult Login(LoginUser u)
         {
             var logtime = DateTime.Now.ToString("MM/dd/yyyy HH:mm:ss");
-            var id = string.IsNullOrEmpty(u.sessionID) ? getSessionId() : u.sessionID;
+            var id = u.sessionID;
 
             ClientUser client = null;
 
@@ -140,7 +136,7 @@ namespace WebNotifications.Controllers
         [HttpPost, Route("api/chat/logout")]
         public IHttpActionResult Logout(String sessionID)
         {
-            ClientUser client = GetClientBySessionId(sessionID);
+            ClientUser client = GetValidClientBySessionId(sessionID);
 
             if (client != null)
             {   client.Logout();
@@ -169,7 +165,7 @@ namespace WebNotifications.Controllers
             */
 
 
-            ClientUser client = sessionID!=null ? this.GetClientBySessionId(sessionID) : null;
+            ClientUser client = sessionID!=null ? GetClientBySessionId(sessionID) : null;
 
             HttpResponseMessage response = Request.CreateResponse();
 
@@ -243,7 +239,7 @@ namespace WebNotifications.Controllers
             };
 
             //Delay 1 second
-            Task.Delay(new TimeSpan(0, 0, 1)).ContinueWith(o => { ChatCallbackMsg(m); });
+            Task.Delay(new TimeSpan(0, 0, 0,1)).ContinueWith(o => { ChatCallbackMsg(m); });
         }
 
 

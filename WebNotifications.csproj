@@ -257,9 +257,6 @@
     <Compile Include="Controllers\Chat\ChatController.cs" />
     <Compile Include="Controllers\Graph\GraphController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers\Session\SessionDataPersistance.cs" />
-    <Compile Include="Controllers\Session\SessionRouteHandler.cs" />
-    <Compile Include="Controllers\Session\SessionControllerHandler.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
